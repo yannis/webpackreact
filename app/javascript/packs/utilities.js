@@ -1,0 +1,13 @@
+import './../utilities/globals.js';
+import './../utilities/flash.js';
+import './../utilities/autosize.js';
+import './../utilities/form.js';
+// import './../utilities/select2.js';
+import './../utilities/stripe-source.js';
+import './../utilities/markdown-form-fields.js';
+import './../utilities/highlight_syntax.js';
+import './../utilities/mathjax.js';
+import './../utilities/dropdown.js';
+import './../utilities/dropdowns.js';
+import './../utilities/behaviosec.js';
+import './../utilities/sweetalert2.js';

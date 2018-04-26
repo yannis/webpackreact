@@ -1,0 +1,160 @@
+// import React from 'react';
+// import ReactDom from 'react-dom';
+// import SortableListComponent from './sortable-list-component';
+// import YoutubePlayer from './video-player-component';
+
+// class BlockListComponent extends React.Component {
+
+//   constructor(props) {
+//     super(props);
+//     this.loadItems = this.loadItems.bind(this);
+//     this.onSort = this.onSort.bind(this);
+//     this.state = {
+//       blocks: []
+//     };
+//   }
+
+//   componentDidMount() {
+//     let _this = this;
+//     this.loadItems();
+//   }
+
+//   loadItems() {
+//     $.ajax({
+//       url: this.props.sorterUrl,
+//       method: 'get'
+//     }).done((response) => {
+//       this.setState(() => {
+//         return {
+//           blocks: response.data
+//         }
+//       })
+//     }).fail(() => {
+//       debugger
+//     })
+//   }
+
+//   onSort(data) {
+//     this.setState(() => {
+//       return {
+//         blocks: data
+//       }
+//     })
+//   }
+
+//   render() {
+//     let blocks = [];
+//     this.state.blocks.forEach(function(block, index) {
+//       if (block.attributes.type === 'Page') {
+//         blocks.push(<PageComponent page={ block.attributes.page } key={ index } />);
+//       } else if (block.attributes.type === 'Video') {
+//         blocks.push(<VideoComponent video={ block.attributes.video } key={ index } />);
+//       }
+//     });
+//     return (
+//       <div>
+//         <SortableListComponent sorterUrl={ this.props.sorterUrl } itemsUrl={ this.props.itemsUrl } onSort={ this.onSort } />
+//         { blocks }
+//       </div>
+//     );
+//   }
+// }
+
+// class PageComponent extends React.Component {
+//   constructor(props) {
+//     super(props);
+//   }
+
+//   render() {
+//     let page = this.props.page;
+//     return (
+//       <div>
+//         <h1>
+//           { page.full_title }
+//         </h1>
+//         <p>
+//         </p>
+//         <h2>Description</h2>
+//         <div dangerouslySetInnerHTML={{__html: page.description_html }} />
+//         <hr />
+//       </div>
+//     )
+//   }
+// }
+
+// class VideoComponent extends React.Component {
+//   constructor(props) {
+//     super(props);
+//   }
+
+//   render() {
+//     let video = this.props.video;
+//     return (
+//       <div>
+//         <h1>
+//           { video.full_title }
+//         </h1>
+//         <YoutubePlayer videoId={ video.video_id } />
+//         <table>
+//           <tbody>
+//             <tr>
+//               <th>
+//                 Youtube ID
+//               </th>
+//               <td>
+//                 { video.video_id }
+//               </td>
+//             </tr>
+//             <tr>
+//               <th>
+//                 Duration
+//               </th>
+//               <td>
+//                 { video.duration }
+//               </td>
+//             </tr>
+//             <tr>
+//               <th>
+//                 Status
+//               </th>
+//               <td>
+//                 { video.status }
+//               </td>
+//             </tr>
+//           </tbody>
+//         </table>
+//         <hr />
+//       </div>
+//     )
+//   }
+// }
+
+// // class ItemComponent extends React.Component {
+// //   constructor(props) {
+// //     super(props);
+// //   }
+
+// //   render() {
+// //     let item = this.props.item;
+// //     let itemUrl = [this.props.itemsUrl, item.attributes.slug].join('/');
+// //     return (
+// //       <li className='list-group-item' data-id={ item.id } >
+// //         <strong>{ item.attributes.position }</strong>
+// //         <a href={ itemUrl }>{ item.attributes.fullTitle || item.attributes.title }</a>
+// //       </li>
+// //     )
+// //   }
+// // }
+
+// $(document).on('turbolinks:load', function(){
+//   let elements = document.getElementsByClassName('block_list');
+//   if (elements.length) {
+//     [].forEach.call(elements, (element) => {
+//       let sorterUrl = element.dataset.sorterUrl;
+//       let itemsUrl = element.dataset.itemsUrl;
+//       ReactDom.render(<BlockListComponent sorterUrl={ sorterUrl } itemsUrl={ itemsUrl } />, document.getElementById(element.id));
+//     })
+//   }
+// })
+
+// export default BlockListComponent;

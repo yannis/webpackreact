@@ -1,0 +1,80 @@
+// see http://stackoverflow.com/questions/26964974/handle-rails-flash-messages-after-ajax-calls-using-reactjs
+import React from 'react';
+import {render} from 'react-dom';
+
+var FlashMessages = React.createClass({
+  getInitialState: function() {
+    return {
+      messages: this.props.messages,
+    };
+  },
+
+  messages: function (messageObject) {
+    this.setState({
+      messages: messageObject,
+    });
+  },
+
+  render: function() {
+    var flashNodes = [];
+    this.state.messages.map(function(message, index) {
+      flashNodes.push(<FlashMessage key={ index } level={ message.type } text={ message.text } />)
+    })
+    return (
+      <div className='flash_messages_component'>
+        { flashNodes }
+      </div>
+    )
+  }
+});
+
+var FlashMessage = React.createClass({
+  getInitialState: function() {
+    var flash = ['alert alert-dismissible fade show', 'alert-'+this.props.level];
+    if (this.props.level === 'notice') {
+      flash.push('alert-success');
+    } else if (this.props.level === 'error') {
+      flash.push('alert-danger');
+    }
+    return {
+      flashClass: flash.join(' ')
+    }
+  },
+
+  render: function() {
+    var clazz = this.state.flashClass;
+    return (
+      <div key={ this.props.index } className={ clazz } title={ this.props.type } >
+        { this.props.text }
+      </div>
+    )
+  }
+});
+
+function handleFlashMessagesHeader(node, xhr) {
+  var rawMessages = xhr.getResponseHeader("X-Flash-Messages");
+  if (rawMessages) {
+    var jsonMessages = JSON.parse(rawMessages);
+    $.each( jsonMessages, function( type, text ) {
+      var message = { type: type, text: text };
+      Utilities.FMessages.push(message);
+      setTimeout(function(data) {
+        Utilities.FMessages.splice(message, 1);
+        node.messages(Utilities.FMessages);
+      }, 4000);
+    })
+    node.messages(Utilities.FMessages);
+  }
+}
+
+$(document).on('turbolinks:load', () => {
+  window.Utilities = window.Utilities || {};
+  window.Utilities.FMessages = window.Utilities.FMessages || [];
+  window.flashDiv = render(<FlashMessages messages={ Utilities.FMessages } />, $('#flash-messages')[0]);
+});
+
+$(document).on('ajaxComplete', (event, xhr, settings) => {
+  handleFlashMessagesHeader(flashDiv, xhr);
+});
+
+export default FlashMessages;
